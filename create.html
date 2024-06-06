@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="jquery.min.js"></script>
+
+    <style>
+        tr {
+            background-color: #f9f9f9;
+            border-bottom: 1px solid #ddd;
+        }
+
+        td {
+            padding: 10px;
+            text-align: left;
+        }
+        
+        #button {
+            display: inline-block;
+            padding: 8px 12px;
+            background-color: #3498db;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #button:hover {
+            background-color: #2980b9;
+        }
+
+
+        .button{
+            display: flex;
+            position: absolute;
+            left: 196vh;
+            top:4.6vh;
+            font-size: 1rem;
+            padding-left: 10px;
+            padding-right: 10px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            background-color: rgb(72, 240, 5);
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bolder;
+        }
+    </style>
+</head>
+<body>
+    <div class="con">
+        <h1>List of Accounts</h1>
+        <a href="create.html" class="button">+ Add:</a>
+    </div>
+    
+    <table class="output" id="result"></table>
+    <script>
+        
+        $(document).ready(()=>{
+            $.get('http://localhost:8000/api/accounts').done((data) => {
+
+            var tbody = $('#result');
+
+            tbody.empty();
+            
+            data.forEach((data) => {
+                var out = $('<tr>');
+                    out.append('<td class="userId"">' + data.id + '</td>');
+                    out.append('<td>' + data.first_name + '</td>');
+                    out.append('<td>' + data.last_name + '</td>');
+                    out.append('<td>' + data.address + '</td>');
+                    out.append('<td>' + data.phone + '</td>');
+                    out.append('<td>' + data.email + '</td>');
+                    out.append('<td>' + data.sex + '</td>');
+                    out.append('<td>' + data.birth_date + '</td>');
+                    const userCredits = parseFloat(data.max_credit).toLocaleString(undefined,{style: 'currency', currency:'PHP'})
+                    out.append('<td>' + userCredits + '</td>');
+                    out.append('<td><a href="single.html?account_id=' + data.id + '" id="button">Edit</a></td>');
+                    
+                    tbody.append(out);
+                })
+            })
+        })
+
+
+    </script>
+</body>
+</html>
